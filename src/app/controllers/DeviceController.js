@@ -25,40 +25,40 @@ const containerClient = blobServiceClient.getContainerClient(containerName);
 // Variables of sensor devices
 let bat, pH, wt, cond, DO, orp;
 
-// async function receiveMessages() {
-//   while (true) {
-//     const response = await queueClient.receiveMessages({ numberOfMessages: 1 });
-//     const messages = response.receivedMessageItems;
+async function receiveMessages() {
+  while (true) {
+    const response = await queueClient.receiveMessages({ numberOfMessages: 1 });
+    const messages = response.receivedMessageItems;
 
-//     for (const message of messages) {
-//       // Chuyển đổi Base64 thành Buffer
-//       const buffer = Buffer.from(message.messageText, 'base64');
+    for (const message of messages) {
+      // Chuyển đổi Base64 thành Buffer
+      const buffer = Buffer.from(message.messageText, 'base64');
 
-//       // Chuyển đổi Buffer thành chuỗi JSON
-//       const jsonData = buffer.toString('utf8');
+      // Chuyển đổi Buffer thành chuỗi JSON
+      const jsonData = buffer.toString('utf8');
 
-//       // Parse chuỗi JSON thành đối tượng JavaScript
-//       // const jsonObject = JSON.parse(jsonData);
+      // Parse chuỗi JSON thành đối tượng JavaScript
+      // const jsonObject = JSON.parse(jsonData);
 
-//       const startStr = jsonData.search('water-test-iot-hub');
-//       const endStr = jsonData.search("json");
+      const startStr = jsonData.search('water-test-iot-hub');
+      const endStr = jsonData.search("json");
 
-//       blobName = jsonData.slice(startStr, endStr + 4);
+      blobName = jsonData.slice(startStr, endStr + 4);
 
-//       console.log(blobName);
+      console.log(blobName);
 
-//       readData();
+      readData();
 
-//       // Xóa message sau khi xử lý
-//       await queueClient.deleteMessage(message.messageId, message.popReceipt);
-//     }
-//   }
-// }
+      // Xóa message sau khi xử lý
+      await queueClient.deleteMessage(message.messageId, message.popReceipt);
+    }
+  }
+}
 
 // Read data from the queue
 async function readData() {
 	// Lấy thông tin về blob
-	const blobClient = containerClient.getBlobClient('water-test-iot-hub/00/2023/07/04/09/55.json');
+	const blobClient = containerClient.getBlobClient(blobName);
 
 	// Tải dữ liệu từ blob
 	const downloadResponse = await blobClient.download();
