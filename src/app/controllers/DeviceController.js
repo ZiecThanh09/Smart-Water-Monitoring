@@ -46,11 +46,11 @@ async function receiveMessages() {
       blobName = jsonData.slice(startStr, endStr + 4);
 
       console.log(blobName);
-
-      readData();
-
+	  
       // Xóa message sau khi xử lý
       await queueClient.deleteMessage(message.messageId, message.popReceipt);
+	  
+      return readData();
     }
   }
 }
