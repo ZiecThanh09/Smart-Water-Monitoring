@@ -143,7 +143,7 @@ function getStatus(pH, DO) {
 class DeviceController {
 	// [GET] /devices/:slug
 	show(req, res, next) {
-		readData().then((devices) => {
+		receiveMessages().then((devices) => {
 			res.render('devices/show', { devices });
 		}).catch(next);
 
